@@ -57,8 +57,11 @@ app req res = do
 
     putStrLn ""
 
+    let cors_headers = getCorsHeaders (requestHeaders req)
+
     res $ responseLBS status200
-        [("Content-Type", "text/plain")]
+        ([("Content-Type", "text/plain"),
+          ("Access-Control-Allow-Origin", "*")] ++ cors_headers)
         ""
   where
     printBodyChunks = do
@@ -67,3 +70,6 @@ app req res = do
         if BS.null c
             then return ()
             else printBodyChunks
+
+    getCorsHeaders = maybe [] (\hs -> [("Access-Control-Allow-Headers", hs)])
+                   . lookup "Access-Control-Request-Headers"
