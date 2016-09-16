@@ -29,20 +29,17 @@ main = do
 app :: Application
 app req res = do
 
-    setSGR [SetColor Foreground Vivid Red]
+    setSGR [SetColor Foreground Dull Red]
     B8.putStr $ requestMethod req
+    putStr " "
     setSGR [Reset]
-    B8.putStr " "
-    putStrLn . show $ httpVersion req
+    putStr . show $ httpVersion req
+    putStr " "
 
-    setSGR [SetColor Foreground Dull White]
-    putStr "URL: "
-    setSGR [Reset]
-    B8.putStrLn $ rawPathInfo req
+    setSGR [SetColor Foreground Dull Blue]
+    B8.putStr $ rawPathInfo req
 
-    setSGR [SetColor Foreground Dull White]
-    putStr "Query: "
-    setSGR [Reset]
+    setSGR [SetColor Foreground Dull Cyan]
     B8.putStrLn $ rawQueryString req
 
     forM_ (requestHeaders req) $ \(h, v) -> do
